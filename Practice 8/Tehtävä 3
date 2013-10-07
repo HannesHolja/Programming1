@@ -1,0 +1,12 @@
+
+Käyttäisin pythonin oliorakenteita luomalla esimerkiksi opiskelija-olion, jonka sisällä olisi staattinen lista kaikista opiskelijoista main-ohjelmasta tulostamista varten.
+Staattisesta listasta voitaisiin sitten tulostaa esimerkiksi kaikki opintonumerot ja harjoituksiin osallistumiset.
+Alla luurankoa opiskelija-objektista.
+
+class opiskelija():
+    tapaukset = []
+    def __init__(self, nimi, opintonumero, koulutusohjelma, harjoitusryhma, ):
+        self.__class__.tapaukset.append()
+        self.nimi, self.opintonumero, self.koulutusohjelma = nimi, opintonumero, koulutusohjelma
+    def valikoepisteet(self, ekavalikoe, tokavalikoe): #Tässä taas esimerkiksi voitaisiin luoda erillinen funktio valikoepisteet, jolla voitaisiin asettaa välikoepisteitä opiskelijalle
+        self.ekavalikoe, self.tokavalikoe =ekavalikoe,tokavalikoe #Luodaan esimerkiksi tapaus AkiValiaho jolloin henkilölle voitaisiin lisätä pisteitä main-ohjelmasta AkiValiaho.valikoepisteet(arg)

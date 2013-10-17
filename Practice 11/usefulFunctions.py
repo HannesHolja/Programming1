@@ -100,3 +100,36 @@ def editnameinlist(namelist, name):
     deletenamefromlist(namelist,name)
     namelist.insert(index,input("Input the name you would wish to add to the old ones place: "))
 
+def wherethefilesat():
+    thefiles = input("Input the filename your answers are at: ")
+    return thefiles
+
+def readlinestolist(filename):
+    reallines = []
+    with open(filename,'r') as file:
+        for line in file:
+            reallines.append(line.rstrip('\n'))
+    return reallines
+def compare(rightanswers,youranswers):
+    right = 0
+    i = 0
+    for x in youranswers:
+        if x == rightanswers[i]:
+            right+=1
+            i+=1
+        else:
+            i+=1
+    return right
+def wrongones(rightanswers,youranswers):
+    wronglist = []
+    i = 0
+    iterator = 1
+    for x in youranswers:
+        if x != rightanswers[i]:
+           wronglist.append(iterator)
+           i+=1
+           iterator += 1
+        else:
+            i+=1
+            iterator += 1
+    return wronglist

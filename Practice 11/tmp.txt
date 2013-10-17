@@ -1,0 +1,5 @@
+	Here are all the inputted rain amounts in millimeters
+
+	January February March April May June July August September October November December [Overall] [Max Rain] [Min rain] [Median Rain] 
+2013 
+2014 

@@ -133,3 +133,20 @@ def wrongones(rightanswers,youranswers):
             i+=1
             iterator += 1
     return wronglist
+
+def isinlist(name,list):
+    if name in list:
+        return True
+    else:
+        return False
+
+def readtolist(filename):
+    listofnames=[]
+    try:
+        with open(filename,'r') as file:
+            for line in file:
+                listofnames.append(line.rstrip('\n'))
+            return listofnames
+    except IOError:
+        print("File was not found")
+

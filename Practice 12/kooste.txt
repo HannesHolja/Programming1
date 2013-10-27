@@ -1,4 +1,9 @@
-﻿import string
+############https://github.com/AkiValiaho/Programming1/tree/master/Practice%2012###############
+
+
+
+######Moduuli functions.py#####
+import string
 
 def consonant(sentence):
     listofconsonants = "bcdfghjklmnpqrstvwxz"
@@ -139,3 +144,79 @@ def numbers(sentence):
 
 
 
+##########Tehtävä 1##############
+from functions import consonant, vocal,mostcommon
+import time
+
+def main():
+    sentence = input("Please input your sentence:")
+    print("Amount of consonants in your sentence: {0}".format(consonant(sentence)))
+    print("Amount of vocals in your sentence: {0}".format(vocal(sentence)))
+    time.sleep(5)
+    mostcommon(sentence)
+main()
+
+
+############Tehtävä 2###############
+from functions import bigletters,smallletters,numbercases,spaces
+
+def main():
+    filename = input("Please input the filename you wish to get info from:")
+    bigs = bigletters(filename)
+    smalls = smallletters(filename)
+    numbers = numbercases(filename)
+    spacesamount = spaces(filename)
+    print("The number of uppercase letters in the file specified is: {0}".format(bigs))
+    print("The number of lowercase letters in the file specified is: {0}".format(smalls))
+    print("The number of numbers in the file specified is: {0}".format(numbers))
+    print("The number of spaces in the file specified is: {0}".format(spacesamount))
+main()
+##############Tehtävä 3############
+from functions import sikalat
+
+
+def main():
+    sentence = input("Input the sentence you wish to encrypt")
+    print(sikalat(sentence))
+main()
+##############Tehtävä 4##############
+from functions import sikalat, writesikalatfile
+
+def main():
+        filename = input("Input the file you wish to encrypt into sikalatin")
+        writesikalatfile(filename)
+        print("The file salat.txt has been written")
+
+main()
+#################Tehtävä 5###########
+from functions import readlinestolist,longestword,shortestword,userschars,numbers
+
+def main():
+    returnvalue = False
+    while returnvalue == False:
+        filename = input("Input the filename you wish to work with")
+        returnvalue = readlinestolist(filename)
+    loops = True
+    while loops == True:
+        print("How to use this program:")
+        print("Press 1 to find the longest word")
+        print("Press 2 to find the shortest word")
+        print("Press 3 to input characters and see which word has the most of your inputted characters")
+        print("Press 4 to find out which words are simply numbers")
+        print("Press 5 to quit")
+        choice = int(input("Input your choice:"))
+        if choice == 1:
+            longestone = longestword(returnvalue)
+            print("The longest word in your file is: {0}".format(longestone))
+        if choice == 2:
+            shortestone = shortestword(returnvalue)
+            print("The shortest word in your file is: {0}".format(shortestone))
+        if choice == 3:
+            chars = input("Input your characters:")
+            print("The word which contains the most of your inputted characters is: {0}".format(userschars(chars, returnvalue)))
+        if choice == 4:
+            print("Found {0} numbers from your file. The numbers are {1}".format(len(numbers(returnvalue)),numbers(returnvalue)))
+        if choice == 5:
+            print("Stopping program.....")
+            loops=False
+main()

@@ -11,6 +11,44 @@ def vocal(sentence):
     many = compare(listofvocals,sentence)
     return many
 
+def bigletters(sentence):
+    number = 0
+    try:
+        with open(sentence, 'r') as file:
+            for line in file:
+                for i in line:
+                    if i.isupper():
+                        number +=1
+    except IOError:
+        print("Filename specified was not found")
+    return number
+
+def smallletters(sentence):
+        number = 0
+        with open(sentence, 'r') as file:
+            for line in file:
+                for i in line:
+                    if i.islower():
+                        number +=1
+        return number
+
+def numbercases(sentence):
+        number = 0
+        with open(sentence, 'r') as file:
+            for line in file:
+                for i in line:
+                    if i.isdigit():
+                        number +=1
+        return number
+
+def spaces(sentence):
+        number = 0
+        with open(sentence, 'r') as file:
+            for line in file:
+                for i in line:
+                    if i.isspace():
+                        number +=1
+        return number-1
 
 def mostcommon(sentence):
     d = dict.fromkeys(string.ascii_lowercase,0) #Lets generate the english letters first
@@ -21,7 +59,7 @@ def mostcommon(sentence):
             if x == i:
                 d[i] += 1
     print("Here is a sorted interpretation of all letters in the sentence with corresponding values of letters found")
-    for key in sorted(d, key=d.get, reverse=True): #Get the dictionary key value and sort based on those.
+    for key in sorted(d, key=d.get, reverse=True): #Get the dictionary keys value and sort based on those.
         if d[key] != 0: #Don't want to print junk! Just the letters that are REALLY on that sentence
             print(key,d[key], end='  ')
 def compare(finnishalphabet,sentence):

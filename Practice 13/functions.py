@@ -21,7 +21,7 @@ def encrypt(name,kirjainmerkit):
                 break
     return message
 def decode(name,morsemerkit):
-    name = name.rsplit(' ')
+    name = name.rsplit(' ') #Recursivesplit splits the whole list with the splitter specified here, which is in my case is a space
     message = []
     for i in name:
         for x in morsemerkit:

@@ -1,0 +1,253 @@
+########https://github.com/AkiValiaho/Programming1/tree/master/Practice%2011#########
+
+########Tiedoston usefulFunctions.py sisältö#############
+import time
+import random
+
+def greetingsjokeri():
+    print("This program gives you a pseudo-random line for Veikkaus-game Jokeri\nHere it goes!")
+
+def randomnumberlist():
+    numberlist = []
+    for i in range(1,8):
+        numberlist.append(random.randint(1,9))
+    return numberlist
+
+def nameofnumber(i):
+    numbername = ['first','second','third','fourth','fifth','sixth','seventh']
+    return numbername[i-1]
+
+def GreeterWeather():
+    print("This program allows you to input values of this year for rain in millimeters")
+
+
+def nameofmonth():
+    nameofmonth = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November',  'December']
+    rainlist = []
+    x = 0
+    while True:
+        try:
+                rainlist.append(int(input("Input rain value in millimeters for month {0}".format(nameofmonth[x]))))
+                if x <len(nameofmonth)-1:
+                    x += 1
+                    continue
+                else:
+                    break
+        except ValueError:
+            print("You didn't input a proper value")
+            continue
+    return rainlist
+def greatest(rainlist):
+    greatest = max(rainlist)
+    return greatest
+def smallest(rainlist):
+    minimum = min(rainlist)
+    return minimum
+
+def sum(rainlist):
+    overall = 0
+    for i in rainlist:
+        overall += i
+    return overall
+
+def median(rainlist):
+    lenght = len(rainlist)
+    median = sum(rainlist)/lenght
+    return median
+def findindex(rainlist,whattosearch):
+    index = rainlist.index(whattosearch)
+    return index
+def nameforfunctions(index):
+    nameofmonth = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November',  'December']
+    name = nameofmonth[index]
+    return name
+
+def alphabetize(namelist):
+    equalize, greater, lesser = [], [], []
+    if len(namelist) > 1:   #Just checking if the namelist is already divided to only 1 entity
+        pivot = namelist[0]
+        for i in namelist:
+            if i < pivot:
+                lesser.append(i)
+            elif i >pivot:
+                greater.append(i)
+            else:
+                equalize.append(i)
+        return alphabetize(lesser)+alphabetize(equalize)+alphabetize(greater) ##Lets call these new lists recursively with the same function to sort them
+    else:
+        return namelist                 #Since the lenght is now 1 list is already sorted, lets return through the recursion loops
+
+def printall(namelist):
+    for i in namelist:
+        print(i)
+    print('\n')
+def userinput():
+    while True:
+        try:
+            choice = int(input("Make your choice "))
+            break
+        except ValueError:
+            print("Your choice made no sense")
+            continue
+    return choice
+def deletenamefromlist(namelist,name):
+    try:
+         namelist.remove(name)
+    except:
+        print("Name not found")
+def editnameinlist(namelist, name):
+    try:
+        index = namelist.index(name)
+    except:
+        print("Name not found")
+    deletenamefromlist(namelist,name)
+    namelist.insert(index,input("Input the name you would wish to add to the old ones place: "))
+
+def wherethefilesat():
+    thefiles = input("Input the filename your answers are at: ")
+    return thefiles
+
+def readlinestolist(filename):
+    reallines = []
+    with open(filename,'r') as file:
+        for line in file:
+            reallines.append(line.rstrip('\n'))
+    return reallines
+def compare(rightanswers,youranswers):
+    right = 0
+    i = 0
+    for x in youranswers:
+        if x == rightanswers[i]:
+            right+=1
+            i+=1
+        else:
+            i+=1
+    return right
+def wrongones(rightanswers,youranswers):
+    wronglist = []
+    i = 0
+    iterator = 1
+    for x in youranswers:
+        if x != rightanswers[i]:
+           wronglist.append(iterator)
+           i+=1
+           iterator += 1
+        else:
+            i+=1
+            iterator += 1
+    return wronglist
+
+def isinlist(name,list):
+    if name in list:
+        return True
+    else:
+        return False
+
+def readtolist(filename):
+    listofnames=[]
+    try:
+        with open(filename,'r') as file:
+            for line in file:
+                listofnames.append(line.rstrip('\n'))
+            return listofnames
+    except IOError:
+        print("File was not found")
+
+######Tehtävä 1#####
+import usefulFunctions as use
+import time
+
+def main():
+   use.greetingsjokeri()
+   numbers = use.randomnumberlist()
+   for i in range(1,8):
+        print("And here goes the {} number.....".format(use.nameofnumber(i)))
+        time.sleep(1)
+        print("And it's number {0}!".format(numbers[i-1]))
+        time.sleep(1)
+   print("And the line is: ", end='')
+   for number in numbers:
+        print(int(number), end=' ')
+
+main()
+
+#######Tehtävä 2#########
+from usefulFunctions import GreeterWeather,nameofmonth,nameforfunctions,findindex,median,smallest,greatest
+def main():
+    GreeterWeather()
+    rainlist = nameofmonth()
+    greatestname = nameforfunctions(findindex(rainlist,greatest(rainlist)))
+    lowestname = nameforfunctions(findindex(rainlist,smallest(rainlist)))
+    print("The overall it rained this year was {0} millimeters.".format(sum(rainlist)))
+    print("The greatest value for rain was in {0} with a value of {1}".format(greatest(rainlist),lowestname))
+    print("The smallest value for rain was in {0} with a value of {1} millimeters.".format(greatestname,smallest(rainlist)))
+    print("Median of all the values you entered was {0} millimeters".format(median(rainlist)))
+main()
+
+############Tehtävä 3##########
+from usefulFunctions import alphabetize,printall,userinput,deletenamefromlist,editnameinlist
+
+def main():
+    namelist = []
+    print("This is a program that allows you to edit a list")
+    print("To add a name to the list press 1\nTo delete a name from the list press 2")
+    print("To change a name from the list press 3\nTo alphabetize the list press 4\nTo print out the list press 5")
+    while True:
+        choice = userinput()
+        if choice == 1:
+            namelist.append(input("Please input the name you wish to append to the list: "))
+        elif choice ==2:
+            deletenamefromlist(namelist,input("Please input the name you wish to delete from the list: "))
+        elif choice == 3:
+            nametoedit = editnameinlist(namelist,input("Please input the name you wish to edit in the list: "))
+        elif choice == 4:
+            namelist =alphabetize(namelist)
+        elif choice == 5:
+            printall(namelist)
+main()
+
+###########Tehtävä 4##########
+from usefulFunctions import wherethefilesat,readlinestolist,compare,wrongones
+
+def main():
+    rightanswers = ['B','D','A','A','C','A','B','A','C','D','B','C','D','A','D','C','C','B','D','A' ]
+    youranswers =readlinestolist(wherethefilesat())
+    right=compare(rightanswers,youranswers)
+    print("You got {0} right".format(right))
+    print("You answered wrong to questions {0}, You had {1} wrong answers.".format(wrongones(rightanswers,youranswers),len(wrongones(rightanswers,youranswers))))
+    if right >= 15:
+        print("You passed the test")
+    else:
+        print("You didn't pass the test")
+main()
+
+##############Tehtävä 5##########
+from usefulFunctions import isinlist, readtolist
+
+def main():
+        print("How to use this program:")
+        print("To input a girl name and check if it's in the list of most used finnish girl names press 1")
+        print("To input a boy name and check if it's in the list of most used finnish boy names press 2")
+        while True:
+            try:
+                choice = int(input("Input your choice: "))
+                if choice == 1:
+                    girlnames=readtolist('tytot.txt')
+                    value = isinlist(input("Give a girl's name: "),girlnames)
+                    if value == True:
+                        print("The name was found from the girls list")
+                    elif value == False:
+                        print("The name was not found from the girls list")
+                if choice == 2:
+                    boynames=readtolist('pojat.txt')
+                    value = isinlist(input("Give a boy's name: "),boynames)
+                    if value == True:
+                        print("The name was found from the boys list")
+                    elif value == False:
+                        print("The name was not found from the boys list")
+            except ValueError:
+                print("Your choice made no sense")
+                continue
+
+
+main()

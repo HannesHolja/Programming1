@@ -141,7 +141,7 @@ def isinlist(name,list):
         return False
 
 def readtolist(filename):
-    listofnames=[]
+T    listofnames=[]
     try:
         with open(filename,'r') as file:
             for line in file:

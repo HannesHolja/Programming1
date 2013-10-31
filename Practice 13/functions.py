@@ -29,3 +29,26 @@ def decode(name,morsemerkit):
                 message.append(morsemerkit[x])
                 break
     return message
+
+def readlinestolist(filename):
+    reallines =[]
+    tmplist = []
+    newword = ''
+    try:
+            with open(filename,'r') as file:
+                for line in file: #Read the lines first
+                    for word in line.split(): #Splits when it hits a space or a punctuation mark
+                        for character in word:
+                            if character.isalpha():
+                                tmplist.append(character)
+                                continue
+                        for i in tmplist:
+                            newword += i
+                        reallines.append(newword)
+                        newword = ''
+                        tmplist = []
+
+
+    except IOError:
+            print("Filename specified was not found")
+    return reallines

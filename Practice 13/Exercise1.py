@@ -15,7 +15,7 @@ def main():
         if choice == 1:
             name = input("Input the message you wish to encode: ")
             print("The encrypted message is: ")
-            message = encrypt(name,kirjainmerkit)
+            message = encrypt(name.lower(),kirjainmerkit)
             for i in message:
                 print(i,end=' ')
         if choice == 2:

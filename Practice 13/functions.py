@@ -1,3 +1,6 @@
+import pickle
+
+
 def stringtomorse(kirjainmerkitmorset,morsecodes):
         kirjainmerkit = {}
         i = 0
@@ -57,3 +60,84 @@ def printlisttofile(list, filename):
         with open(filename,'w') as file:
                 for i in list:
                     file.write("{0}\n".format(i))
+
+def searchaddress(personname,osoitteet):
+    if personname in osoitteet:
+        email = osoitteet[personname]
+        return email
+    else:
+        return False
+def addaddress(personname,personmail,osoitteet):
+    if personname in osoitteet:
+        return False
+    else:
+        osoitteet[personname] = personmail
+        return osoitteet
+def changeaddress(personname,personnewmail,osoitteet):
+        if personname in osoitteet:
+            osoitteet[personname] = personnewmail
+            return osoitteet
+        else:
+            return False
+
+def flowcontrol(choice,osoitteet):
+        if choice == 1:
+            personname = input("Please input the persons name").lower()
+            address = searchaddress(personname,osoitteet)
+            if address == False:
+                print("The person you were looking for was not found from the dictionary")
+            else:
+                print("Email address of {0} is {1}".format(personname,address))
+        elif choice == 2:
+            personname = input("Please input the persons name").lower()
+            personmail = input("Please input the persons email address").lower()
+            tmp = addaddress(personname,personmail,osoitteet)
+            if tmp == False:
+                print("Email address of {0} is already on the list".format(personname))
+            else:
+                osoitteet = tmp
+                print("Email address of {0} was added to the list".format(personname))
+                return osoitteet
+        elif choice == 5:
+            return False
+        elif choice == 3:
+            value =changeaddress(input("Please input the persons name").lower(),input("Please input the persons new email").lower(),osoitteet )
+            if value != False:
+                print("Persons email updated")
+                return value
+            else:
+                print("Person was not found from the dictionary")
+        elif choice == 4:
+            value = removefromdict(input("Input the persons name you wish to delete from the dictionary "),osoitteet)
+            if value != False:
+                osoitteet = value
+                return osoitteet
+            else:
+                print("The person name was not found from the dictionary")
+
+def dumpdictionary(osoitteet,filename):
+    with open(filename,'wb') as file:
+        pickle.dump(osoitteet,file)
+
+def loaddictionary():
+    try:
+        with open('osoitteet.dat','rb') as file:
+            osoitteet =pickle.load(file)
+            if osoitteet == None:
+                return {}
+            return osoitteet
+    except IOError:
+        return {}
+    except EOFError:
+        return {}
+
+def removefromdict(name, osoitteet):
+    if name in osoitteet:
+        del osoitteet[name]
+        return osoitteet
+    else:
+        return False
+
+
+
+

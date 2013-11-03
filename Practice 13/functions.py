@@ -1,4 +1,4 @@
-import pickle
+import pickle,random
 
 
 def stringtomorse(kirjainmerkitmorset,morsecodes):
@@ -138,6 +138,19 @@ def removefromdict(name, osoitteet):
     else:
         return False
 
+def deckshuffled():
+    deck = {}
+    for suit in ['Clubs', 'Diamonds', 'Hearts', 'Spades']:
+        for num in range(2, 15):
+            deck[suit+str(num)] = num
+    return deck
+def addtocardvalue(deck,playerscard):
+        return deck[playerscard]
+def declarewinner(cardvalues):
+    try:
+        return max(cardvalues, key=cardvalues.get)
+    except ValueError:
+        print("Everybody busted!")
 
 
 

@@ -1,0 +1,316 @@
+############https://github.com/AkiValiaho/Programming1/tree/master/Practice%2013###########
+
+
+###########functions.py tiedoston sisältöä#############
+import pickle,random
+
+
+def stringtomorse(kirjainmerkitmorset,morsecodes):
+        kirjainmerkit = {}
+        i = 0
+        for x in kirjainmerkitmorset:
+                kirjainmerkit.update({x:morsecodes[i]})
+                i+=1
+        return kirjainmerkit
+def morsetostring(kirjainmerkitmorset,morsecodes):
+        morsemerkit = {}
+        y = 0
+        for z in morsecodes:
+            morsemerkit.update({z:kirjainmerkitmorset[y]})
+            y+=1
+        return morsemerkit
+def encrypt(name,kirjainmerkit):
+    message = []
+    for i in name:
+        for x in kirjainmerkit:
+            if i == x:
+                message.append(kirjainmerkit[x])
+                break
+    return message
+def decode(name,morsemerkit):
+    name = name.rsplit(' ') #Recursivesplit splits the whole list with the splitter specified here, which is in my case is a space
+    message = []
+    for i in name:
+        for x in morsemerkit:
+            if i == x:
+                message.append(morsemerkit[x])
+                break
+    return message
+
+def readlinestolist(filename):
+    reallines =[]
+    tmplist = []
+    newword = ''
+    try:
+            with open(filename,'r') as file:
+                for line in file: #Read the lines first
+                    for word in line.split(): #Splits when it hits a space or a punctuation mark
+                        for character in word:
+                            if character.isalpha(): #Iterate character-by-character to check if we are dealing with a symbol that is not from the alphabet
+                                tmplist.append(character) #Lets append that alpha to tmplist, else continue to another char of that word
+                                continue
+                        for i in tmplist:
+                            newword += i #Time to structurize back the word
+                        reallines.append(newword.lower())   #Append the word as a lowercase to the list reallines
+                        newword = ''
+                        tmplist = []
+
+
+    except IOError:
+            print("Filename specified was not found")
+    return reallines
+
+def printlisttofile(list, filename):
+        with open(filename,'w') as file:
+                for i in list:
+                    file.write("{0}\n".format(i))
+
+def searchaddress(personname,osoitteet):
+    if personname in osoitteet:
+        email = osoitteet[personname]
+        return email
+    else:
+        return False
+def addaddress(personname,personmail,osoitteet):
+    if personname in osoitteet:
+        return False
+    else:
+        osoitteet[personname] = personmail
+        return osoitteet
+def changeaddress(personname,personnewmail,osoitteet):
+        if personname in osoitteet:
+            osoitteet[personname] = personnewmail
+            return osoitteet
+        else:
+            return False
+
+def flowcontrol(choice,osoitteet):
+        if choice == 1:
+            personname = input("Please input the persons name").lower()
+            address = searchaddress(personname,osoitteet)
+            if address == False:
+                print("The person you were looking for was not found from the dictionary")
+            else:
+                print("Email address of {0} is {1}".format(personname,address))
+        elif choice == 2:
+            personname = input("Please input the persons name").lower()
+            personmail = input("Please input the persons email address").lower()
+            tmp = addaddress(personname,personmail,osoitteet)
+            if tmp == False:
+                print("Email address of {0} is already on the list".format(personname))
+            else:
+                osoitteet = tmp
+                print("Email address of {0} was added to the list".format(personname))
+                return osoitteet
+        elif choice == 5:
+            return False
+        elif choice == 3:
+            value =changeaddress(input("Please input the persons name").lower(),input("Please input the persons new email").lower(),osoitteet )
+            if value != False:
+                print("Persons email updated")
+                return value
+            else:
+                print("Person was not found from the dictionary")
+        elif choice == 4:
+            value = removefromdict(input("Input the persons name you wish to delete from the dictionary "),osoitteet)
+            if value != False:
+                osoitteet = value
+                return osoitteet
+            else:
+                print("The person name was not found from the dictionary")
+
+def dumpdictionary(osoitteet,filename):
+    with open(filename,'wb') as file:
+        pickle.dump(osoitteet,file)
+
+def loaddictionary():
+    try:
+        with open('osoitteet.dat','rb') as file:
+            osoitteet =pickle.load(file)
+            if osoitteet == None:
+                return {}
+            return osoitteet
+    except IOError:
+        return {}
+    except EOFError:
+        return {}
+
+def removefromdict(name, osoitteet):
+    if name in osoitteet:
+        del osoitteet[name]
+        return osoitteet
+    else:
+        return False
+
+def deckshuffled():
+    deck = {}
+    for suit in ['Clubs', 'Diamonds', 'Hearts', 'Spades']:
+        for num in range(2, 15):
+            deck[suit+str(num)] = num
+    return deck
+def addtocardvalue(deck,playerscard):
+        return deck[playerscard]
+def declarewinner(cardvalues):
+    try:
+        return max(cardvalues, key=cardvalues.get)
+    except ValueError:
+        print("Everybody busted!")
+
+#################Tehtävä 1####################
+import string
+from functions import stringtomorse,morsetostring,encrypt,decode
+
+def main():
+        kirjainmerkit = {}
+        morsemerkit = {}
+        i,y = 0,0
+        morsecodes = ['.-','-...','-.-.','-..','.','..-.','--.','....','..','.---','-.-','.-..','--','-.','---','.--.','--.-','.-.','...','-','..-','...-','.--','-..-','-.--','--..','']
+        kirjainmerkitmorset = string.ascii_lowercase
+        kirjainmerkitmorset += ' '
+        kirjainmerkitmorset.split()
+        kirjainmerkit = stringtomorse(kirjainmerkitmorset,morsecodes)
+        morsemerkit = morsetostring(kirjainmerkitmorset,morsecodes)
+        choice = int(input("Press 1 to encode a message, Press 2 to decrypt a message"))
+        if choice == 1:
+            name = input("Input the message you wish to encode: ")
+            print("The encrypted message is: ")
+            message = encrypt(name.lower(),kirjainmerkit)
+            for i in message:
+                print(i,end=' ')
+        if choice == 2:
+            name = input("Input the message you wish to decode: ")
+            name.split()
+            print("The decoded message is: ",end='')
+            message = decode(name,morsemerkit)
+            for i in message:
+                print(i,end='')
+
+main()
+#####################Tehtävä 2#########################
+from functions import readlinestolist
+def main():
+    filetrueflag = False
+    filename = input("Input the filename: ")
+    listofwords = set(readlinestolist(filename))
+    for i in listofwords:
+        print(i,end=' ')
+main()
+
+######################Tehtävä 3#########################
+from functions import readlinestolist,printlisttofile
+from time import sleep
+
+def main():
+    firstfile = input("Input filename for the first file")
+    secondfile = input("Input filename for the second file")
+    firstset = set(readlinestolist(firstfile))
+    secondset = set(readlinestolist(secondfile))
+    thirdset = firstset.intersection(secondset)
+    print("These are all the words that are in both files: ")
+    sleep(3)
+    printlisttofile(firstset,'tmp.txt')
+    for i in thirdset:
+        if i == '':
+            continue
+        print(i,end=' ')
+    print('\n\n')
+    print("These are the words that only appear in the first file")
+    sleep(3)
+    thirdset = firstset.difference(secondset)
+    for i in thirdset:
+        if i == '':
+            continue
+        print(i,end=' ')
+
+    print('\n\n')
+    print("These are the words that only appear in one of the files, not both at the same time")
+    sleep(3)
+    thirdset = firstset.symmetric_difference(secondset)
+    for i in thirdset:
+        if i == '':
+            continue
+        print(i,end=' ')
+
+main()
+#######################Tehtävä 4######################
+from functions import flowcontrol,dumpdictionary,loaddictionary
+
+def main():
+    osoitteet = {}
+    osoitteet = loaddictionary()
+    flag = True
+    while flag == True:
+        print("Names currently in the dict: {0}".format([i for i in osoitteet.keys()])) #For demonstration purposes only, delete if this gets too big
+        print("How to use this program:")
+        print("Press 1 to search for an email address")
+        print("Press 2 to add a new email address")
+        print("Press 3 to change an email address")
+        print("Press 4 to delete an email address")
+        print("Press 5 to quit")
+        choice = int(input("Input your choice:"))
+        tmp = flowcontrol(choice,osoitteet)
+        if tmp == False:
+            dumpdictionary(osoitteet,'osoitteet.dat')
+            flag = False
+        elif tmp != None:
+            osoitteet = tmp
+main()
+#####################Tehtävä 5####################
+from functions import deckshuffled, addtocardvalue,declarewinner
+import random
+def main():
+    flag = True
+    while flag == True:
+        randomdeck = deckshuffled()
+        valueofcards = 0
+        numberofplayers = int(input("How many players?"))
+        playernumber = 1
+        cardvalues = {}
+        while playernumber <= numberofplayers:
+            if len(randomdeck) < 10:
+                print("Cards out, shuffling a new deck")
+                randomdeck = {}
+                randomdeck = deckshuffled()
+            playerscard = random.choice(list(randomdeck.keys()))
+            valueofcards += addtocardvalue(randomdeck,playerscard)
+            del randomdeck[playerscard]
+            print("-------------------------------------------------------------------------------")
+            print("Player {0} hits a {1}, overall the player has {2}".format(playernumber,playerscard,valueofcards))
+            print("-------------------------------------------------------------------------------\n\n")
+            if valueofcards > 21:
+                print("It's a bust! The player loses")
+                valueofcards = 0
+                playernumber += 1
+                continue
+            elif valueofcards == 21:
+                print("Players hits a blackjack!")
+                cardvalues['Player ' + str(playernumber)] = valueofcards
+                valueofcards = 0
+                playernumber += 1
+                continue
+            print("Press 1 to hit a new card")
+            print("Press 2 to stand")
+            choice = int(input("Input your choice"))
+            if choice == 1:
+                continue
+            else:
+                print("The player stands at {0}".format(valueofcards))
+                cardvalues['Player '+ str(playernumber)] = valueofcards
+                playernumber += 1
+                valueofcards = 0
+        if declarewinner(cardvalues) != None:
+            print("And the winner is {0} with {1}".format(declarewinner(cardvalues),cardvalues[declarewinner(cardvalues)]))
+        else:
+            print("Everybody busted!")
+        newgame = input("Press 1 to quit, else a new game will start")
+        if newgame == 1:
+            flag == False
+
+
+main()
+
+
+
+
+
+
